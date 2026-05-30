@@ -1,5 +1,5 @@
 import { spawn, ChildProcess, execSync } from 'child_process'
-import { writeFileSync, existsSync, mkdirSync } from 'fs'
+import { writeFileSync, readFileSync, existsSync, mkdirSync } from 'fs'
 import path from 'path'
 
 const PORT = 3457
@@ -60,7 +60,7 @@ export async function setup() {
 export async function teardown() {
   try {
     const { cookie } = JSON.parse(
-      require('fs').readFileSync(SESSION_FILE, 'utf-8'),
+      readFileSync(SESSION_FILE, 'utf-8'),
     )
     if (cookie) {
       await fetch(`${BASE_URL}/api/auth/sign-out`, {
@@ -84,7 +84,7 @@ async function createTestSession(): Promise<string> {
     body: JSON.stringify(TEST_USER),
   })
 
-  if (!signUpRes.ok && signUpRes.status !== 422) {
+  if (!signUpRes.ok && signUpRes.status !== 422 && signUpRes.status !== 403) {
     const body = await signUpRes.text()
     throw new Error(`Sign-up failed (${signUpRes.status}): ${body}`)
   }

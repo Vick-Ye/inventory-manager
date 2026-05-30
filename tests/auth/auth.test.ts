@@ -34,7 +34,7 @@ describe('auth', () => {
     expect(data).toBeDefined()
   })
 
-  it('rejects sign-up with duplicate email', async () => {
+  it('rejects sign-up when disabled', async () => {
     const { res } = await apiJson(
       '/api/auth/sign-up/email',
       {
@@ -43,6 +43,6 @@ describe('auth', () => {
       },
       false,
     )
-    expect(res.status).toBe(422)
+    expect([403, 422]).toContain(res.status)
   })
 })

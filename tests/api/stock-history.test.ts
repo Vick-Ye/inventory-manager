@@ -101,7 +101,6 @@ describe('stock-history API', () => {
       body: { change: 3 },
     })
 
-    const now = new Date().toISOString()
     const past = new Date(Date.now() - 86400000).toISOString()
     const future = new Date(Date.now() + 86400000).toISOString()
 
@@ -126,7 +125,7 @@ describe('stock-history API', () => {
     const { data } = await apiJson('/api/stock-history')
     expect(data.history.length).toBeGreaterThanOrEqual(1)
 
-    const entry = data.history.find((h: any) => h.item_id === item.id)
+    const entry = data.history.find((h: Record<string, unknown>) => h.item_id === item.id)
     expect(entry).toBeDefined()
     expect(entry.item_name).toBe('Stock-Test-G')
     expect(entry.item_slug).toBe('stock-test-g')
@@ -140,6 +139,6 @@ describe('stock-history API', () => {
     await apiJson(`/api/items/${itemB.id}/stock`, { method: 'PATCH', body: { change: 3 } })
 
     const { data } = await apiJson(`/api/stock-history?itemId=${itemA.id}`)
-    expect(data.history.every((h: any) => h.item_id === itemA.id)).toBe(true)
+    expect(data.history.every((h: Record<string, unknown>) => h.item_id === itemA.id)).toBe(true)
   })
 })

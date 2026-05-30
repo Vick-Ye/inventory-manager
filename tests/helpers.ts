@@ -38,15 +38,17 @@ export async function signIn(baseUrl: string): Promise<string> {
   return all.map((c) => c.split(';')[0].trim()).filter(Boolean).join('; ')
 }
 
+type ApiOptions = Omit<RequestInit, 'body'> & { body?: Record<string, unknown> }
+
 export async function api(
   path: string,
-  options: RequestInit & { body?: unknown } = {},
+  options: ApiOptions = {},
   authenticated = true,
 ) {
   const { baseUrl, cookie } = getSession()
   const headers: Record<string, string> = {}
 
-  if (typeof options.body === 'object' && options.body !== null && !(options.body instanceof FormData)) {
+  if (typeof options.body === 'object' && options.body !== null) {
     headers['Content-Type'] = 'application/json'
   }
 
@@ -54,22 +56,17 @@ export async function api(
     headers['Cookie'] = cookie
   }
 
-  const isFormBody = options.body instanceof FormData
-  const body = isFormBody
-    ? options.body
-    : options.body !== undefined
-      ? JSON.stringify(options.body)
-      : undefined
+  const body = options.body !== undefined ? JSON.stringify(options.body) : undefined
 
   return fetch(`${baseUrl}${path}`, {
     ...options,
     headers: { ...headers, ...(options.headers as Record<string, string>) },
     body,
     redirect: 'manual',
-  })
+  } as RequestInit)
 }
 
-export async function apiJson(path: string, options: RequestInit & { body?: unknown } = {}, authenticated = true) {
+export async function apiJson(path: string, options: ApiOptions = {}, authenticated = true) {
   const res = await api(path, options, authenticated)
   const data = res.status === 204 || res.status === 307 || res.status === 401 ? null : await res.json()
   return { res, data }

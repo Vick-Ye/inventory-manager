@@ -134,7 +134,7 @@ describe('items API', () => {
 
     const { data } = await apiJson('/api/items?search=Searchable-Unique')
     expect(data.items.length).toBeGreaterThanOrEqual(1)
-    expect(data.items.some((i: any) => i.id === item.id)).toBe(true)
+    expect(data.items.some((i: Record<string, unknown>) => i.id === item.id)).toBe(true)
   })
 
   it('filters items by category', async () => {
@@ -146,7 +146,7 @@ describe('items API', () => {
 
     const { data } = await apiJson(`/api/items?categoryId=${testCategoryId}`)
     expect(data.items.length).toBeGreaterThanOrEqual(1)
-    expect(data.items.some((i: any) => i.id === item.id)).toBe(true)
+    expect(data.items.some((i: Record<string, unknown>) => i.id === item.id)).toBe(true)
   })
 
   it('updates item name and regenerates slug', async () => {
