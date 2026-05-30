@@ -44,7 +44,7 @@ describe('stock-history API', () => {
     const item = await createItem('Stock-Test-B')
     await apiJson(`/api/items/${item.id}/stock`, {
       method: 'PATCH',
-      body: { change: 5 },
+      body: { change: 5, reason: 'test' },
     })
     const { data } = await apiJson(`/api/items/${item.id}`)
     expect(data.stock).toBe(5)
@@ -55,7 +55,7 @@ describe('stock-history API', () => {
 
     const { res, data } = await apiJson(`/api/items/${item.id}/stock`, {
       method: 'PATCH',
-      body: { change: -1 },
+      body: { change: -1, reason: 'test' },
     })
     expect(res.status).toBe(400)
     expect(data.error).toContain('Insufficient')
@@ -98,7 +98,7 @@ describe('stock-history API', () => {
     const item = await createItem('Stock-Test-F')
     await apiJson(`/api/items/${item.id}/stock`, {
       method: 'PATCH',
-      body: { change: 3 },
+      body: { change: 3, reason: 'test' },
     })
 
     const past = new Date(Date.now() - 86400000).toISOString()
@@ -119,7 +119,7 @@ describe('stock-history API', () => {
     const item = await createItem('Stock-Test-G')
     await apiJson(`/api/items/${item.id}/stock`, {
       method: 'PATCH',
-      body: { change: 5 },
+      body: { change: 5, reason: 'test' },
     })
 
     const { data } = await apiJson('/api/stock-history')
@@ -135,8 +135,8 @@ describe('stock-history API', () => {
     const itemA = await createItem('Stock-Test-H')
     const itemB = await createItem('Stock-Test-I')
 
-    await apiJson(`/api/items/${itemA.id}/stock`, { method: 'PATCH', body: { change: 2 } })
-    await apiJson(`/api/items/${itemB.id}/stock`, { method: 'PATCH', body: { change: 3 } })
+    await apiJson(`/api/items/${itemA.id}/stock`, { method: 'PATCH', body: { change: 2, reason: 'test' } })
+    await apiJson(`/api/items/${itemB.id}/stock`, { method: 'PATCH', body: { change: 3, reason: 'test' } })
 
     const { data } = await apiJson(`/api/stock-history?itemId=${itemA.id}`)
     expect(data.history.every((h: Record<string, unknown>) => h.item_id === itemA.id)).toBe(true)
