@@ -1,6 +1,7 @@
 import { sql } from '@/lib/db'
 import Link from 'next/link'
 import { Package, Activity, Tags } from 'lucide-react'
+import { SendReportButton } from '@/components/ui/send-report-button'
 
 export const dynamic = 'force-dynamic'
 
@@ -62,6 +63,8 @@ export default async function DashboardPage() {
           </div>
         </div>
       </div>
+
+      <SendReportButton />
 
       <div>
         <div className="mb-3 flex items-center justify-between">
