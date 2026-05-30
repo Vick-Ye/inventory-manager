@@ -110,65 +110,73 @@ export default function ItemDetailPage() {
       </Link>
 
       <div className="flex flex-wrap gap-6">
-        <ImageDisplay
-          src={item.image_url}
-          alt={item.name}
-          className="h-48 w-48 rounded-lg object-cover shadow"
-          fallbackClassName="h-48 w-48 rounded-lg text-sm"
-        />
+        <div className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-3">
+          {/* row 1, col 1 */}
+          <ImageDisplay
+            src={item.image_url}
+            alt={item.name}
+            className="h-48 w-48 rounded-lg object-cover shadow"
+            fallbackClassName="h-48 w-48 rounded-lg text-sm"
+          />
 
-        <div className="flex-1 space-y-3">
-          <div className="flex items-start justify-between">
-            <div>
-              <h1 className="text-2xl font-bold">{item.name}</h1>
-              {item.description && (
-                <p className="mt-1 text-gray-500">{item.description}</p>
-              )}
+          {/* row 1, col 2 */}
+          <div className="space-y-3">
+            <div className="flex items-start justify-between">
+              <div>
+                <h1 className="text-2xl font-bold">{item.name}</h1>
+              </div>
+              <div className="flex gap-2">
+                <Link
+                  href={`/items/${slug}/edit`}
+                  className="rounded p-2 text-gray-500 hover:bg-gray-100 hover:text-indigo-600"
+                >
+                  <Edit2 size={18} />
+                </Link>
+                <button
+                  onClick={() => setShowDelete(true)}
+                  className="rounded p-2 text-gray-500 hover:bg-red-50 hover:text-red-600"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </div>
             </div>
-            <div className="flex gap-2">
-              <Link
-                href={`/items/${slug}/edit`}
-                className="rounded p-2 text-gray-500 hover:bg-gray-100 hover:text-blue-600"
-              >
-                <Edit2 size={18} />
-              </Link>
-              <button
-                onClick={() => setShowDelete(true)}
-                className="rounded p-2 text-gray-500 hover:bg-red-50 hover:text-red-600"
-              >
-                <Trash2 size={18} />
-              </button>
-            </div>
-          </div>
 
-          <div className="flex flex-wrap gap-2">
-            {item.categories.map((c) => (
+            <div className="flex flex-wrap gap-2">
+              {item.categories.map((c) => (
+                <span
+                  key={c.id}
+                  className="rounded-full bg-indigo-100 px-3 py-1 text-sm text-indigo-700"
+                >
+                  {c.name}
+                </span>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-4">
+              <span className="text-sm text-gray-500">Stock:</span>
               <span
-                key={c.id}
-                className="rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-700"
+                className={`text-xl font-bold ${
+                  item.stock > 0 ? 'text-green-700' : 'text-red-600'
+                }`}
               >
-                {c.name}
+                {item.stock}
               </span>
-            ))}
+            </div>
+
+            <StockAdjustForm slug={slug} currentStock={item.stock} onAdjusted={onStockAdjusted} />
+
+            <div className="flex gap-6 text-xs text-gray-400">
+              <span>Created: {new Date(item.created_at).toLocaleDateString()}</span>
+              <span>Updated: {new Date(item.updated_at).toLocaleDateString()}</span>
+            </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-500">Stock:</span>
-            <span
-              className={`text-xl font-bold ${
-                item.stock > 0 ? 'text-green-700' : 'text-red-600'
-              }`}
-            >
-              {item.stock}
-            </span>
-          </div>
-
-          <StockAdjustForm slug={slug} currentStock={item.stock} onAdjusted={onStockAdjusted} />
-
-          <div className="flex gap-6 text-xs text-gray-400">
-            <span>Created: {new Date(item.created_at).toLocaleDateString()}</span>
-            <span>Updated: {new Date(item.updated_at).toLocaleDateString()}</span>
-          </div>
+          {/* row 2, cols 1-2 */}
+          {item.description && (
+            <p className="col-span-2 whitespace-pre-wrap break-words text-sm text-gray-500">
+              {item.description}
+            </p>
+          )}
         </div>
       </div>
 
@@ -178,7 +186,7 @@ export default function ItemDetailPage() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => setShowGraph(!showGraph)}
-              className="flex items-center gap-1.5 text-sm text-blue-600 hover:underline"
+              className="flex items-center gap-1.5 text-sm text-indigo-600 hover:underline"
             >
               <BarChart3 size={16} />
               {showGraph ? 'Hide Graph' : 'Show Graph'}

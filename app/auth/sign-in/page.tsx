@@ -52,7 +52,7 @@ export default function SignInPage() {
               value={email}
               onChange={e => setEmail(e.target.value)}
               required
-              className="mt-1 block w-full rounded border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none"
+              className="mt-1 block w-full rounded border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none"
             />
           </div>
 
@@ -65,14 +65,14 @@ export default function SignInPage() {
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
-              className="mt-1 block w-full rounded border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none"
+              className="mt-1 block w-full rounded border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none"
             />
           </div>
 
           <button
             type="submit"
             disabled={submitting}
-            className="w-full rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+            className="w-full rounded bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
           >
             {submitting ? 'Signing in...' : 'Sign In'}
           </button>
@@ -80,7 +80,7 @@ export default function SignInPage() {
 
         <p className="mt-4 text-center text-sm text-gray-500">
           Don&apos;t have an account?{' '}
-          <a href="/auth/sign-up" className="text-blue-600 hover:underline">
+          <a href="/auth/sign-up" className="text-indigo-600 hover:underline">
             Sign up
           </a>
         </p>

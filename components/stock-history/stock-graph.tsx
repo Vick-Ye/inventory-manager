@@ -44,13 +44,11 @@ export function StockGraph({ data }: { data: Entry[] }) {
             tickFormatter={(val: string) => format(parseISO(val), 'MMM d')}
           />
           <YAxis tick={{ fontSize: 12 }} stroke="#9ca3af" allowDecimals={false} />
-          <Tooltip
-            labelFormatter={(val: string) => format(parseISO(val), 'MMM d, yyyy HH:mm')}
-          />
+          <Tooltip labelFormatter={(val) => format(parseISO(val as string), 'MMM d, yyyy HH:mm')} />
           <Line
             type="monotone"
             dataKey="stock"
-            stroke="#2563eb"
+            stroke="#4f46e5"
             strokeWidth={2}
             dot={{ r: 3 }}
           />

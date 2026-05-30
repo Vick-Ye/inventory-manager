@@ -56,7 +56,7 @@ export function StockAdjustForm({
     return (
       <button
         onClick={() => setOpen(true)}
-        className="text-sm text-blue-600 hover:underline"
+        className="text-sm text-indigo-600 hover:underline"
       >
         Adjust Stock
       </button>
@@ -72,7 +72,7 @@ export function StockAdjustForm({
           value={change}
           onChange={(e) => setChange(e.target.value)}
           placeholder="+5 or -3"
-          className="mt-1 w-28 rounded-md border px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+          className="mt-1 w-28 rounded-md border px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
           autoFocus
         />
       </div>
@@ -83,13 +83,13 @@ export function StockAdjustForm({
           value={reason}
           onChange={(e) => setReason(e.target.value)}
           placeholder="restock, sold, etc."
-          className="mt-1 w-48 rounded-md border px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+          className="mt-1 w-48 rounded-md border px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
         />
       </div>
       <button
         type="submit"
         disabled={submitting}
-        className="rounded-md bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
+        className="rounded-md bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-700 disabled:opacity-50"
       >
         {submitting ? 'Applying…' : 'Apply'}
       </button>

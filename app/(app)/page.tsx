@@ -27,7 +27,7 @@ export default async function DashboardPage() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-lg border bg-white p-4 shadow-sm">
           <div className="flex items-center gap-3">
-            <Package className="text-blue-600" size={22} />
+            <Package className="text-indigo-600" size={22} />
             <div>
               <p className="text-xs text-gray-500">Total Items</p>
               <p className="text-2xl font-bold">{itemCount.count}</p>
@@ -36,7 +36,7 @@ export default async function DashboardPage() {
         </div>
         <div className="rounded-lg border bg-white p-4 shadow-sm">
           <div className="flex items-center gap-3">
-            <Tags className="text-purple-600" size={22} />
+            <Tags className="text-indigo-600" size={22} />
             <div>
               <p className="text-xs text-gray-500">Categories</p>
               <p className="text-2xl font-bold">{catCount.count}</p>
@@ -45,7 +45,7 @@ export default async function DashboardPage() {
         </div>
         <div className="rounded-lg border bg-white p-4 shadow-sm">
           <div className="flex items-center gap-3">
-            <Package className="text-green-600" size={22} />
+            <Package className="text-indigo-600" size={22} />
             <div>
               <p className="text-xs text-gray-500">Total Stock</p>
               <p className="text-2xl font-bold">{totalStock.total}</p>
@@ -66,7 +66,7 @@ export default async function DashboardPage() {
       <div>
         <div className="mb-3 flex items-center justify-between">
           <h2 className="text-lg font-semibold">Recent Activity</h2>
-          <Link href="/stock-history" className="text-sm text-blue-600 hover:underline">
+          <Link href="/stock-history" className="text-sm text-indigo-600 hover:underline">
             View all
           </Link>
         </div>
@@ -92,7 +92,7 @@ export default async function DashboardPage() {
               {recent.map((e: any) => ( // eslint-disable-line @typescript-eslint/no-explicit-any
                 <tr key={e.id} className="border-b last:border-0 hover:bg-gray-50">
                   <td className="px-4 py-3">
-                    <Link href={`/items/${e.item_slug}`} className="text-blue-600 hover:underline">
+                    <Link href={`/items/${e.item_slug}`} className="text-indigo-600 hover:underline">
                       {e.item_name}
                     </Link>
                   </td>

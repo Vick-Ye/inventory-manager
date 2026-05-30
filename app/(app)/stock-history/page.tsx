@@ -108,7 +108,7 @@ export default function StockHistoryPage() {
         />
         <button
           onClick={() => setShowGraph(!showGraph)}
-          className="flex items-center gap-1.5 text-sm text-blue-600 hover:underline"
+          className="flex items-center gap-1.5 text-sm text-indigo-600 hover:underline"
         >
           <BarChart3 size={16} />
           {showGraph ? 'Hide Graph' : 'Show Graph'}

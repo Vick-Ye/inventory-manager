@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
+import React from 'react'
 import {
   LayoutDashboard,
   Package,
@@ -45,8 +46,8 @@ export function Sidebar({ userEmail }: { userEmail: string }) {
             onClick={() => setMobileOpen(false)}
             className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
               active
-                ? 'bg-blue-50 text-blue-700'
-                : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                ? 'bg-indigo-600 text-white'
+                : 'text-indigo-200 hover:bg-indigo-900/50 hover:text-white'
             }`}
           >
             <l.icon size={18} />
@@ -71,19 +72,19 @@ export function Sidebar({ userEmail }: { userEmail: string }) {
       {mobileOpen && (
         <div className="fixed inset-0 z-30 md:hidden">
           <div className="absolute inset-0 bg-black/30" onClick={() => setMobileOpen(false)} />
-          <aside className="relative flex h-full w-64 flex-col bg-white p-4 shadow-xl">
+          <aside className="relative flex h-full w-64 flex-col bg-[#1e1b4b] p-4 shadow-xl">
             <div className="mb-6 flex items-center justify-between">
-              <span className="text-lg font-bold">Inventory</span>
-              <button onClick={() => setMobileOpen(false)} className="rounded p-1 hover:bg-gray-100">
+              <span className="text-lg font-bold text-white">Inventory</span>
+              <button onClick={() => setMobileOpen(false)} className="rounded p-1 text-indigo-200 hover:bg-indigo-900/50">
                 <X size={20} />
               </button>
             </div>
             {nav}
-            <div className="mt-auto border-t pt-4">
-              <p className="mb-3 truncate text-sm text-gray-500">{userEmail}</p>
+            <div className="mt-auto border-t border-indigo-800 pt-4">
+              <p className="mb-3 truncate text-sm text-indigo-300">{userEmail}</p>
               <button
                 onClick={handleSignOut}
-                className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50"
+                className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-red-400 hover:bg-red-500/10 hover:text-red-300"
               >
                 <LogOut size={18} />
                 Sign Out
@@ -94,14 +95,14 @@ export function Sidebar({ userEmail }: { userEmail: string }) {
       )}
 
       {/* desktop sidebar */}
-      <aside className="hidden w-64 flex-shrink-0 border-r bg-white p-4 md:flex md:flex-col">
-        <div className="mb-8 text-lg font-bold">Inventory Manager</div>
+      <aside className="hidden w-64 flex-shrink-0 flex-col bg-[#1e1b4b] p-4 md:flex">
+        <div className="mb-8 text-lg font-bold text-white">Inventory Manager</div>
         {nav}
-        <div className="mt-auto border-t pt-4">
-          <p className="mb-3 truncate text-sm text-gray-500">{userEmail}</p>
+        <div className="mt-auto border-t border-indigo-800 pt-4">
+          <p className="mb-3 truncate text-sm text-indigo-300">{userEmail}</p>
           <button
             onClick={handleSignOut}
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50"
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-red-400 hover:bg-red-500/10 hover:text-red-300"
           >
             <LogOut size={18} />
             Sign Out

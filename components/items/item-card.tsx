@@ -22,7 +22,7 @@ export function ItemCard({
   onDelete: (item: Item) => void
 }) {
   return (
-    <div className="flex gap-4 rounded-lg border bg-white p-4 shadow-sm">
+    <div className="flex gap-4 rounded-lg border bg-white p-4 shadow-sm hover:shadow-md transition-shadow">
       <Link href={`/items/${item.slug}`} className="shrink-0">
         <ImageDisplay
           src={item.image_url}
@@ -35,7 +35,7 @@ export function ItemCard({
         <div>
           <Link
             href={`/items/${item.slug}`}
-            className="text-lg font-semibold text-blue-700 hover:underline"
+            className="text-lg font-semibold text-indigo-700 hover:underline"
           >
             {item.name}
           </Link>
@@ -46,7 +46,7 @@ export function ItemCard({
             {item.categories.map((c) => (
               <span
                 key={c.id}
-                className="rounded-full bg-blue-100 px-2 py-0.5 text-xs text-blue-700"
+                className="rounded-full bg-indigo-100 px-2 py-0.5 text-xs text-indigo-700"
               >
                 {c.name}
               </span>
@@ -55,16 +55,20 @@ export function ItemCard({
         </div>
         <div className="mt-3 flex items-center justify-between">
           <span
-            className={`text-sm font-medium ${
-              item.stock > 0 ? 'text-green-700' : item.stock === 0 ? 'text-gray-400' : 'text-red-600'
+            className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+              item.stock > 5
+                ? 'bg-emerald-100 text-emerald-700'
+                : item.stock > 0
+                  ? 'bg-amber-100 text-amber-700'
+                  : 'bg-red-100 text-red-700'
             }`}
           >
-            Stock: {item.stock}
+            {item.stock > 0 ? `${item.stock} in stock` : 'Out of stock'}
           </span>
           <div className="flex gap-2">
             <Link
               href={`/items/${item.slug}/edit`}
-              className="rounded p-1.5 text-gray-500 hover:bg-gray-100 hover:text-blue-600"
+              className="rounded p-1.5 text-gray-500 hover:bg-gray-100 hover:text-indigo-600"
             >
               <Edit2 size={16} />
             </Link>

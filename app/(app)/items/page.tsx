@@ -88,7 +88,7 @@ export default function ItemsPage() {
         <h1 className="text-2xl font-bold">Items</h1>
         <Link
           href="/items/new"
-          className="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          className="flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
         >
           <PlusCircle size={18} />
           Add Item
@@ -108,7 +108,7 @@ export default function ItemsPage() {
       ) : items.length === 0 ? (
         <p className="py-8 text-center text-gray-400">
           No items found.{' '}
-          <Link href="/items/new" className="text-blue-600 hover:underline">
+          <Link href="/items/new" className="text-indigo-600 hover:underline">
             Add one
           </Link>
         </p>

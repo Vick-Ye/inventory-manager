@@ -136,14 +136,14 @@ export default function CategoryDetailPage() {
                 value={editDesc}
                 onChange={(e) => setEditDesc(e.target.value)}
                 rows={3}
-                className="block w-full max-w-md rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+                className="block w-full max-w-md rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
                 autoFocus
               />
               <div className="flex gap-2">
                 <button
                   onClick={handleSaveDescription}
                   disabled={saving}
-                  className="flex items-center gap-1 rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
+                  className="flex items-center gap-1 rounded-md bg-indigo-600 px-3 py-1.5 text-sm text-white hover:bg-indigo-700 disabled:opacity-50"
                 >
                   <Save size={14} />
                   {saving ? 'Saving…' : 'Save'}
@@ -159,10 +159,12 @@ export default function CategoryDetailPage() {
             </div>
           ) : (
             <div className="mt-2 flex items-center gap-2">
-              <p className="text-gray-500">{category.description ?? 'No description'}</p>
+              <div className="max-w-md whitespace-pre-wrap break-words rounded-md border border-gray-300 px-3 py-2 text-sm text-gray-500">
+                {category.description ?? 'No description'}
+              </div>
               <button
                 onClick={startEdit}
-                className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-blue-600"
+                className="rounded p-1 text-gray-400 hover:bg-gray-100 hover:text-indigo-600"
               >
                 <Edit3 size={14} />
               </button>
@@ -176,7 +178,7 @@ export default function CategoryDetailPage() {
           <h2 className="text-lg font-semibold">Items</h2>
           <button
             onClick={() => setShowAddPanel(!showAddPanel)}
-            className="flex items-center gap-1.5 rounded-md bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700"
+            className="flex items-center gap-1.5 rounded-md bg-indigo-600 px-3 py-1.5 text-sm text-white hover:bg-indigo-700"
           >
             <Plus size={16} />
             Add Items
@@ -184,7 +186,7 @@ export default function CategoryDetailPage() {
         </div>
 
         {showAddPanel && (
-          <div className="mb-4 rounded-lg border bg-blue-50 p-4">
+          <div className="mb-4 rounded-lg border bg-indigo-50 p-4">
             <div className="mb-3 flex flex-wrap items-center gap-3">
               <div className="relative flex-1">
                 <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -193,7 +195,7 @@ export default function CategoryDetailPage() {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search existing items…"
-                  className="w-full rounded-md border px-3 py-2 pl-9 text-sm focus:border-blue-500 focus:outline-none"
+                  className="w-full rounded-md border px-3 py-2 pl-9 text-sm focus:border-indigo-500 focus:outline-none"
                   autoFocus
                 />
               </div>
@@ -220,14 +222,14 @@ export default function CategoryDetailPage() {
                         key={item.id}
                         onClick={() => toggleSelect(item.id)}
                         className={`flex cursor-pointer items-center justify-between rounded-md px-3 py-2 text-sm transition-colors ${
-                          selected ? 'bg-blue-100' : 'hover:bg-gray-100'
+                          selected ? 'bg-indigo-100' : 'hover:bg-gray-100'
                         }`}
                       >
                         <div>
                           <span className="font-medium">{item.name}</span>
                           <span className="ml-2 text-gray-500">Stock: {item.stock}</span>
                         </div>
-                        {selected && <Check size={16} className="text-blue-600" />}
+                        {selected && <Check size={16} className="text-indigo-600" />}
                       </div>
                     )
                   })
@@ -239,7 +241,7 @@ export default function CategoryDetailPage() {
               <button
                 onClick={handleLinkItems}
                 disabled={linking}
-                className="mt-3 rounded-md bg-blue-600 px-4 py-1.5 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
+                className="mt-3 rounded-md bg-indigo-600 px-4 py-1.5 text-sm text-white hover:bg-indigo-700 disabled:opacity-50"
               >
                 {linking ? 'Adding…' : `Add ${selectedIds.size} item${selectedIds.size > 1 ? 's' : ''}`}
               </button>
@@ -267,7 +269,7 @@ export default function CategoryDetailPage() {
                     <td className="px-4 py-3">
                       <Link
                         href={`/items/${item.slug}`}
-                        className="font-medium text-blue-700 hover:underline"
+                        className="font-medium text-indigo-700 hover:underline"
                       >
                         {item.name}
                       </Link>
@@ -276,7 +278,7 @@ export default function CategoryDetailPage() {
                     <td className="px-4 py-3 text-right">
                       <Link
                         href={`/items/${item.slug}/edit`}
-                        className="inline-flex items-center gap-1 rounded px-2 py-1 text-xs text-gray-500 hover:bg-gray-100 hover:text-blue-600"
+                        className="inline-flex items-center gap-1 rounded px-2 py-1 text-xs text-gray-500 hover:bg-gray-100 hover:text-indigo-600"
                       >
                         <Edit3 size={13} />
                         Edit

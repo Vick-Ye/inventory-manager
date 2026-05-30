@@ -46,7 +46,7 @@ export default function NewItemPage() {
               min={0}
               value={stock}
               onChange={(e) => setStock(Math.max(0, parseInt(e.target.value) || 0))}
-              className="mt-1 block w-32 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+              className="mt-1 block w-32 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
             />
           </div>
           <ItemForm

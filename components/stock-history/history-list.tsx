@@ -47,7 +47,7 @@ export function HistoryList({
                 <td className="px-4 py-3">
                   <Link
                     href={`/items/${e.item_slug}`}
-                    className="text-blue-600 hover:underline"
+                    className="text-indigo-600 hover:underline"
                   >
                     {e.item_name}
                   </Link>

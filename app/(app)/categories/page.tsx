@@ -41,7 +41,7 @@ export default function CategoriesPage() {
         <h1 className="text-2xl font-bold">Categories</h1>
         <Link
           href="/categories/new"
-          className="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          className="flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
         >
           <PlusCircle size={18} />
           New Category
@@ -53,7 +53,7 @@ export default function CategoriesPage() {
       ) : categories.length === 0 ? (
         <p className="py-8 text-center text-gray-400">
           No categories yet.{' '}
-          <Link href="/categories/new" className="text-blue-600 hover:underline">
+          <Link href="/categories/new" className="text-indigo-600 hover:underline">
             Create one
           </Link>
         </p>
@@ -71,7 +71,7 @@ export default function CategoriesPage() {
               {categories.map((c) => (
                 <tr key={c.id} className="border-b last:border-0 hover:bg-gray-50">
                   <td className="px-4 py-3 font-medium">
-                    <Link href={`/categories/${c.id}`} className="text-blue-700 hover:underline">
+                    <Link href={`/categories/${c.id}`} className="text-indigo-700 hover:underline">
                       {c.name}
                     </Link>
                   </td>

@@ -12,10 +12,14 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    border-color: #e5e7eb;
+  }
+  :focus-visible {
+    outline: none;
+    ring: 2px solid #4f46e5;
+    ring-offset: 2px;
   }
 }
 
