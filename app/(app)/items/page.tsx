@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
-import { PlusCircle } from 'lucide-react'
+import { PlusCircle, LayoutGrid, List, Edit2, Trash2 } from 'lucide-react'
+import { ImageDisplay } from '@/components/ui/image-display'
 import { SearchBar } from '@/components/items/search-bar'
 import { ItemCard } from '@/components/items/item-card'
 import { Pagination } from '@/components/ui/pagination'
@@ -33,6 +34,7 @@ export default function ItemsPage() {
   const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(true)
   const [deleteTarget, setDeleteTarget] = useState<Item | null>(null)
+  const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid')
 
   const fetchItems = useCallback(async () => {
     const params = new URLSearchParams()
@@ -86,13 +88,29 @@ export default function ItemsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Items</h1>
-        <Link
-          href="/items/new"
-          className="flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
-        >
-          <PlusCircle size={18} />
-          Add Item
-        </Link>
+        <div className="flex items-center gap-3">
+          <div className="flex overflow-hidden rounded-md border">
+            <button
+              onClick={() => setViewMode('grid')}
+              className={`p-2 transition-colors ${viewMode === 'grid' ? 'bg-indigo-600 text-white' : 'bg-white text-gray-500 hover:bg-gray-50'}`}
+            >
+              <LayoutGrid size={16} />
+            </button>
+            <button
+              onClick={() => setViewMode('table')}
+              className={`p-2 transition-colors ${viewMode === 'table' ? 'bg-indigo-600 text-white' : 'bg-white text-gray-500 hover:bg-gray-50'}`}
+            >
+              <List size={16} />
+            </button>
+          </div>
+          <Link
+            href="/items/new"
+            className="flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+          >
+            <PlusCircle size={18} />
+            Add Item
+          </Link>
+        </div>
       </div>
 
       <SearchBar
@@ -112,11 +130,94 @@ export default function ItemsPage() {
             Add one
           </Link>
         </p>
-      ) : (
+      ) : viewMode === 'grid' ? (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item) => (
             <ItemCard key={item.id} item={item} onDelete={handleDelete} />
           ))}
+        </div>
+      ) : (
+        <div className="overflow-hidden rounded-lg border bg-white">
+          <table className="w-full text-left text-sm">
+            <thead>
+              <tr className="border-b bg-gray-50 text-xs uppercase text-gray-500">
+                <th className="px-4 py-3 font-medium">Image</th>
+                <th className="px-4 py-3 font-medium">Name</th>
+                <th className="px-4 py-3 font-medium">Description</th>
+                <th className="px-4 py-3 font-medium">Categories</th>
+                <th className="px-4 py-3 font-medium">Stock</th>
+                <th className="px-4 py-3" />
+              </tr>
+            </thead>
+            <tbody>
+              {items.map((item) => (
+                <tr key={item.id} className="border-b last:border-0 hover:bg-gray-50">
+                  <td className="px-4 py-3">
+                    <Link href={`/items/${item.slug}`}>
+                      <ImageDisplay
+                        src={item.image_url}
+                        alt={item.name}
+                        className="h-10 w-10 rounded object-cover"
+                        fallbackClassName="h-10 w-10 rounded text-[10px]"
+                      />
+                    </Link>
+                  </td>
+                  <td className="px-4 py-3">
+                    <Link
+                      href={`/items/${item.slug}`}
+                      className="font-medium text-indigo-700 hover:underline"
+                    >
+                      {item.name}
+                    </Link>
+                  </td>
+                  <td className="max-w-xs truncate px-4 py-3 text-gray-500">
+                    {item.description ?? '—'}
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex flex-wrap gap-1">
+                      {item.categories.map((c) => (
+                        <span
+                          key={c.id}
+                          className="rounded-full bg-indigo-100 px-2 py-0.5 text-[11px] text-indigo-700"
+                        >
+                          {c.name}
+                        </span>
+                      ))}
+                    </div>
+                  </td>
+                  <td className="px-4 py-3">
+                    <span
+                      className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${
+                        item.stock > 5
+                          ? 'bg-emerald-100 text-emerald-700'
+                          : item.stock > 0
+                            ? 'bg-amber-100 text-amber-700'
+                            : 'bg-red-100 text-red-700'
+                      }`}
+                    >
+                      {item.stock}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex justify-end gap-1">
+                      <Link
+                        href={`/items/${item.slug}/edit`}
+                        className="rounded p-1.5 text-gray-400 hover:bg-gray-100 hover:text-indigo-600"
+                      >
+                        <Edit2 size={14} />
+                      </Link>
+                      <button
+                        onClick={() => handleDelete(item)}
+                        className="rounded p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-600"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
 
