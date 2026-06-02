@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --experimental-https --experimental-https-key certificates/localhost-key.pem --experimental-https-cert certificates/localhost.pem",
+    "vercel-build": "node scripts/migrate.mjs && next build",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
