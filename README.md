@@ -41,7 +41,7 @@ cd inventory-manager
 npm install
 
 # Run the database migration
-node scripts/migrate.mjs
+npm run migrate
 
 # Start the development server
 npm run dev
