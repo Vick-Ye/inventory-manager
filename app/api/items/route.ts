@@ -15,7 +15,7 @@ export async function GET(request: Request) {
   let p = 1
 
   if (search) {
-    conditions.push(`(i.name ILIKE $${p} OR i.notes ILIKE $${p})`)
+    conditions.push(`(i.name ILIKE $${p} OR i.notes ILIKE $${p} OR i.sku ILIKE $${p})`)
     params.push(`%${search}%`)
     p++
   }
