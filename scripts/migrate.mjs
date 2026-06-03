@@ -19,4 +19,8 @@ for (const stmt of statements) {
   console.log('  OK')
 }
 
+console.log('Applying schema updates...')
+await sql.query(`ALTER TABLE items ADD COLUMN IF NOT EXISTS barcode TEXT UNIQUE`)
+console.log('  OK')
+
 console.log('Migration complete!')

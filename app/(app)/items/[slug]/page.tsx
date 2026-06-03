@@ -19,6 +19,7 @@ interface Item {
   description: string | null
   stock: number
   image_url: string | null
+  barcode: string | null
   categories: { id: number; name: string }[]
   created_at: string
   updated_at: string
@@ -162,6 +163,15 @@ export default function ItemDetailPage() {
                 {item.stock}
               </span>
             </div>
+
+            {item.barcode && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-500">Barcode:</span>
+                <code className="rounded bg-gray-100 px-2 py-0.5 text-sm font-mono">
+                  {item.barcode}
+                </code>
+              </div>
+            )}
 
             <StockAdjustForm slug={slug} currentStock={item.stock} onAdjusted={onStockAdjusted} />
 

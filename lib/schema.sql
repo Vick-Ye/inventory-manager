@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS items (
   description TEXT,
   stock INTEGER NOT NULL DEFAULT 0 CHECK (stock >= 0),
   image_url TEXT,
+  barcode TEXT UNIQUE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );

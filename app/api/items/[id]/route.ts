@@ -61,7 +61,7 @@ export async function PUT(
     return Response.json({ error: parsed.error.flatten() }, { status: 400 })
   }
 
-  const { name, description, image_url, categoryIds } = parsed.data
+  const { name, description, image_url, barcode, categoryIds } = parsed.data
 
   let slug = item.slug
   if (name && name !== item.name) {
@@ -78,6 +78,7 @@ export async function PUT(
         name = COALESCE(${name ?? null}, name),
         description = COALESCE(${description ?? null}, description),
         image_url = COALESCE(${image_url ?? null}, image_url),
+        barcode = COALESCE(${barcode ?? null}, barcode),
         updated_at = now()
     WHERE id = ${item.id}
     RETURNING *

@@ -15,6 +15,7 @@ export const createItemSchema = z.object({
   description: z.string().optional(),
   image_url: z.string().url().optional().or(z.literal('')),
   stock: z.number().int().min(0).optional(),
+  barcode: z.string().optional(),
   categoryIds: z.array(z.number().int().positive()).optional(),
 })
 
@@ -22,6 +23,7 @@ export const updateItemSchema = z.object({
   name: z.string().min(1).max(255).optional(),
   description: z.string().optional(),
   image_url: z.string().url().optional().or(z.literal('')),
+  barcode: z.string().optional(),
   categoryIds: z.array(z.number().int().positive()).optional(),
 })
 

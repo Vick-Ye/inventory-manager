@@ -12,6 +12,7 @@ interface Category {
 export default function NewItemPage() {
   const searchParams = useSearchParams()
   const preselectedCategoryId = searchParams.get('categoryId')
+  const preselectedBarcode = searchParams.get('barcode') ?? ''
   const [categories, setCategories] = useState<Category[]>([])
   const [stock, setStock] = useState(0)
 
@@ -21,9 +22,9 @@ export default function NewItemPage() {
 
   const initialCategoryIds = preselectedCategoryId
     ? [parseInt(preselectedCategoryId)]
-    : undefined
+    : []
 
-  async function handleSubmit(data: { name: string; description: string; image_url: string; categoryIds: number[] }) {
+  async function handleSubmit(data: { name: string; description: string; image_url: string; barcode: string; categoryIds: number[] }) {
     const res = await fetch('/api/items', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -53,7 +54,7 @@ export default function NewItemPage() {
             categories={categories}
             onSubmit={handleSubmit}
             submitLabel="Create Item"
-            initial={initialCategoryIds ? { name: '', description: '', image_url: '', categoryIds: initialCategoryIds } : undefined}
+            initial={{ name: '', description: '', image_url: '', barcode: preselectedBarcode, categoryIds: initialCategoryIds }}
           />
         </div>
       )}

@@ -2,6 +2,8 @@
 
 import { useState, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
+import { Scan } from 'lucide-react'
+import { BarcodeScanner } from '@/components/items/barcode-scanner'
 
 interface Category {
   id: number
@@ -12,6 +14,7 @@ interface ItemData {
   name: string
   description: string
   image_url: string
+  barcode: string
   categoryIds: number[]
 }
 
@@ -32,7 +35,9 @@ export function ItemForm({
   const [name, setName] = useState(initial?.name ?? '')
   const [description, setDescription] = useState(initial?.description ?? '')
   const [imageUrl, setImageUrl] = useState(initial?.image_url ?? '')
+  const [barcode, setBarcode] = useState(initial?.barcode ?? '')
   const [categoryIds, setCategoryIds] = useState<number[]>(initial?.categoryIds ?? [])
+  const [showScanner, setShowScanner] = useState(false)
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
@@ -41,7 +46,7 @@ export function ItemForm({
     setError('')
     setSubmitting(true)
 
-    const { ok, error: err } = await submitTo({ name, description, image_url: imageUrl, categoryIds })
+    const { ok, error: err } = await submitTo({ name, description, image_url: imageUrl, barcode, categoryIds })
     if (!ok) {
       setError(err ?? 'Failed to save item')
       setSubmitting(false)
@@ -94,6 +99,34 @@ export function ItemForm({
           className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
         />
       </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Barcode (optional)</label>
+        <div className="mt-1 flex gap-2">
+          <input
+            type="text"
+            value={barcode}
+            onChange={(e) => setBarcode(e.target.value)}
+            placeholder="Scan or type a barcode"
+            className="block flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+          />
+          <button
+            type="button"
+            onClick={() => setShowScanner(true)}
+            className="flex items-center gap-1.5 rounded-md border px-3 py-2 text-sm text-gray-600 hover:bg-gray-50"
+          >
+            <Scan size={16} />
+            Scan
+          </button>
+        </div>
+      </div>
+
+      {showScanner && (
+        <BarcodeScanner
+          onDetected={(code) => { setBarcode(code); setShowScanner(false) }}
+          onClose={() => setShowScanner(false)}
+        />
+      )}
 
       <div>
         <label className="block text-sm font-medium text-gray-700">Categories</label>

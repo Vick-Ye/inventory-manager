@@ -74,7 +74,7 @@ export async function POST(request: Request) {
     return Response.json({ error: parsed.error.flatten() }, { status: 400 })
   }
 
-  const { name, description, image_url, stock, categoryIds } = parsed.data
+  const { name, description, image_url, stock, barcode, categoryIds } = parsed.data
 
   const slug = await generateUniqueSlug(name, async (s) => {
     const [existing] = await sql`SELECT 1 FROM items WHERE slug = ${s}`
@@ -82,8 +82,8 @@ export async function POST(request: Request) {
   })
 
   const [item] = await sql`
-    INSERT INTO items (slug, name, description, image_url, stock)
-    VALUES (${slug}, ${name}, ${description ?? null}, ${image_url || null}, ${stock ?? 0})
+    INSERT INTO items (slug, name, description, image_url, stock, barcode)
+    VALUES (${slug}, ${name}, ${description ?? null}, ${image_url || null}, ${stock ?? 0}, ${barcode ?? null})
     RETURNING *
   `
 

@@ -18,6 +18,7 @@ interface Item {
   name: string
   description: string | null
   image_url: string | null
+  barcode: string | null
   stock: number
   categories: { id: number; name: string }[]
 }
@@ -42,7 +43,7 @@ export default function EditItemPage() {
     })
   }, [slug, router])
 
-  async function handleSubmit(data: { name: string; description: string; image_url: string; categoryIds: number[] }) {
+  async function handleSubmit(data: { name: string; description: string; image_url: string; barcode: string; categoryIds: number[] }) {
     const res = await fetch(`/api/items/${slug}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -81,6 +82,7 @@ export default function EditItemPage() {
           name: item.name,
           description: item.description ?? '',
           image_url: item.image_url ?? '',
+          barcode: item.barcode ?? '',
           categoryIds: item.categories.map((c) => c.id),
         }}
         onSubmit={handleSubmit}

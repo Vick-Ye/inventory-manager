@@ -9,6 +9,7 @@ import {
   PlusCircle,
   Activity,
   Tags,
+  Scan,
   LogOut,
   Menu,
   X,
@@ -21,6 +22,7 @@ const links = [
   { href: '/items', label: 'Items', icon: Package },
   { href: '/items/new', label: 'Add Item', icon: PlusCircle },
   { href: '/categories', label: 'Categories', icon: Tags },
+  { href: '/items/scan', label: 'Scan Barcode', icon: Scan },
   { href: '/stock-history', label: 'Stock History', icon: Activity },
 ]
 
