@@ -24,7 +24,7 @@ export default function NewItemPage() {
     ? [parseInt(preselectedCategoryId)]
     : []
 
-  async function handleSubmit(data: { name: string; description: string; image_url: string; barcode: string; categoryIds: number[] }) {
+  async function handleSubmit(data: { name: string; notes: string; price: number; length: number; width: number; height: number; weight: number; image_url: string; barcode: string; sku: string; categoryIds: number[] }) {
     const res = await fetch('/api/items', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -54,7 +54,7 @@ export default function NewItemPage() {
             categories={categories}
             onSubmit={handleSubmit}
             submitLabel="Create Item"
-            initial={{ name: '', description: '', image_url: '', barcode: preselectedBarcode, categoryIds: initialCategoryIds }}
+            initial={{ name: '', notes: '', price: 0, length: 0, width: 0, height: 0, weight: 0, image_url: '', barcode: preselectedBarcode, sku: '', categoryIds: initialCategoryIds }}
           />
         </div>
       )}

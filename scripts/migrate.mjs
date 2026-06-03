@@ -21,6 +21,16 @@ for (const stmt of statements) {
 
 console.log('Applying schema updates...')
 await sql.query(`ALTER TABLE items ADD COLUMN IF NOT EXISTS barcode TEXT UNIQUE`)
+await sql.query(`ALTER TABLE items ADD COLUMN IF NOT EXISTS price INTEGER`)
+await sql.query(`ALTER TABLE items ADD COLUMN IF NOT EXISTS dimensions TEXT`)
+await sql.query(`ALTER TABLE items ADD COLUMN IF NOT EXISTS weight NUMERIC(8,2)`)
+await sql.query(`ALTER TABLE items ADD COLUMN IF NOT EXISTS notes TEXT`)
+await sql.query(`ALTER TABLE items DROP COLUMN IF EXISTS description`)
+await sql.query(`ALTER TABLE items ADD COLUMN IF NOT EXISTS length NUMERIC(8,2)`)
+await sql.query(`ALTER TABLE items ADD COLUMN IF NOT EXISTS width NUMERIC(8,2)`)
+await sql.query(`ALTER TABLE items ADD COLUMN IF NOT EXISTS height NUMERIC(8,2)`)
+await sql.query(`ALTER TABLE items ADD COLUMN IF NOT EXISTS sku TEXT UNIQUE`)
+await sql.query(`ALTER TABLE items DROP COLUMN IF EXISTS dimensions`)
 console.log('  OK')
 
 console.log('Migration complete!')

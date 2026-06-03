@@ -16,7 +16,13 @@ interface Item {
   id: number
   slug: string
   name: string
-  description: string | null
+  notes: string | null
+  price: number | null
+  length: number | null
+  width: number | null
+  height: number | null
+  weight: number | null
+  sku: string | null
   image_url: string | null
   barcode: string | null
   stock: number
@@ -43,7 +49,7 @@ export default function EditItemPage() {
     })
   }, [slug, router])
 
-  async function handleSubmit(data: { name: string; description: string; image_url: string; barcode: string; categoryIds: number[] }) {
+  async function handleSubmit(data: { name: string; notes: string; price: number; length: number; width: number; height: number; weight: number; image_url: string; barcode: string; sku: string; categoryIds: number[] }) {
     const res = await fetch(`/api/items/${slug}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -80,9 +86,15 @@ export default function EditItemPage() {
         categories={categories}
         initial={{
           name: item.name,
-          description: item.description ?? '',
+          notes: item.notes ?? '',
+          price: item.price ?? 0,
+          length: typeof item.length === 'string' ? parseFloat(item.length) : (item.length ?? 0),
+          width: typeof item.width === 'string' ? parseFloat(item.width) : (item.width ?? 0),
+          height: typeof item.height === 'string' ? parseFloat(item.height) : (item.height ?? 0),
+          weight: typeof item.weight === 'string' ? parseFloat(item.weight) : (item.weight ?? 0),
           image_url: item.image_url ?? '',
           barcode: item.barcode ?? '',
+          sku: item.sku ?? '',
           categoryIds: item.categories.map((c) => c.id),
         }}
         onSubmit={handleSubmit}

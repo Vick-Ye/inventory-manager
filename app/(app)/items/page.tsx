@@ -13,7 +13,13 @@ interface Item {
   id: number
   slug: string
   name: string
-  description: string | null
+  notes: string | null
+  price: number | null
+  length: number | null
+  width: number | null
+  height: number | null
+  weight: number | null
+  sku: string | null
   stock: number
   image_url: string | null
   categories: { id: number; name: string }[]
@@ -35,11 +41,22 @@ export default function ItemsPage() {
   const [loading, setLoading] = useState(true)
   const [deleteTarget, setDeleteTarget] = useState<Item | null>(null)
   const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid')
+  const [showAdvanced, setShowAdvanced] = useState(false)
+  const [minVolume, setMinVolume] = useState('')
+  const [maxVolume, setMaxVolume] = useState('')
+  const [minDim, setMinDim] = useState('')
+  const [maxDim, setMaxDim] = useState('')
+  const [dimFormula, setDimFormula] = useState('166')
 
   const fetchItems = useCallback(async () => {
     const params = new URLSearchParams()
     if (search) params.set('search', search)
     if (categoryId) params.set('categoryId', categoryId)
+    if (minVolume) params.set('minVolume', minVolume)
+    if (maxVolume) params.set('maxVolume', maxVolume)
+    if (minDim) params.set('minDim', minDim)
+    if (maxDim) params.set('maxDim', maxDim)
+    if (dimFormula !== '166') params.set('dimFormula', dimFormula)
     params.set('page', String(page))
     params.set('limit', '20')
 
@@ -48,7 +65,7 @@ export default function ItemsPage() {
     setItems(data.items ?? [])
     setTotal(data.pagination?.total ?? 0)
     setTotalPages(data.pagination?.totalPages ?? 0)
-  }, [search, categoryId, page])
+  }, [search, categoryId, page, minVolume, maxVolume, minDim, maxDim, dimFormula])
 
   useEffect(() => {
     let cancelled = false
@@ -121,6 +138,68 @@ export default function ItemsPage() {
         onCategoryChange={handleCategoryChange}
       />
 
+      <button
+        onClick={() => setShowAdvanced(!showAdvanced)}
+        className="text-sm text-indigo-600 hover:underline"
+      >
+        {showAdvanced ? 'Hide' : 'Show'} advanced filters
+      </button>
+
+      {showAdvanced && (
+        <div className="flex flex-wrap items-end gap-4 rounded-lg border bg-gray-50 p-4">
+          <div>
+            <label className="block text-xs font-medium text-gray-500">Min Volume (in³)</label>
+            <input
+              type="number" min={0}
+              value={minVolume}
+              onChange={(e) => { setMinVolume(e.target.value); setPage(1) }}
+              className="mt-1 block w-28 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-gray-500">Max Volume (in³)</label>
+            <input
+              type="number" min={0}
+              value={maxVolume}
+              onChange={(e) => { setMaxVolume(e.target.value); setPage(1) }}
+              className="mt-1 block w-28 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-gray-500">Min DIM Weight</label>
+            <input
+              type="number" min={0}
+              value={minDim}
+              onChange={(e) => { setMinDim(e.target.value); setPage(1) }}
+              placeholder="lbs / kg"
+              className="mt-1 block w-28 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-gray-500">Max DIM Weight</label>
+            <input
+              type="number" min={0}
+              value={maxDim}
+              onChange={(e) => { setMaxDim(e.target.value); setPage(1) }}
+              placeholder="lbs / kg"
+              className="mt-1 block w-28 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-gray-500">DIM Formula</label>
+            <select
+              value={dimFormula}
+              onChange={(e) => { setDimFormula(e.target.value); setPage(1) }}
+              className="mt-1 block rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none"
+            >
+              <option value="166">DIM / 166 (lbs)</option>
+              <option value="139">DIM / 139 (lbs)</option>
+              <option value="5000">DIM / 5000 (kg)</option>
+            </select>
+          </div>
+        </div>
+      )}
+
       {loading ? (
         <p className="py-8 text-center text-gray-400">Loading…</p>
       ) : items.length === 0 ? (
@@ -143,7 +222,7 @@ export default function ItemsPage() {
               <tr className="border-b bg-gray-50 text-xs uppercase text-gray-500">
                 <th className="px-4 py-3 font-medium">Image</th>
                 <th className="px-4 py-3 font-medium">Name</th>
-                <th className="px-4 py-3 font-medium">Description</th>
+                <th className="px-4 py-3 font-medium">Price</th>
                 <th className="px-4 py-3 font-medium">Categories</th>
                 <th className="px-4 py-3 font-medium">Stock</th>
                 <th className="px-4 py-3" />
@@ -170,8 +249,8 @@ export default function ItemsPage() {
                       {item.name}
                     </Link>
                   </td>
-                  <td className="max-w-xs truncate px-4 py-3 text-gray-500">
-                    {item.description ?? '—'}
+                  <td className="px-4 py-3 font-medium text-gray-900">
+                    {item.price !== null ? `$${(item.price / 100).toFixed(2)}` : '—'}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex flex-wrap gap-1">

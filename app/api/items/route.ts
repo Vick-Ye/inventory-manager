@@ -15,7 +15,7 @@ export async function GET(request: Request) {
   let p = 1
 
   if (search) {
-    conditions.push(`(i.name ILIKE $${p} OR i.description ILIKE $${p})`)
+    conditions.push(`(i.name ILIKE $${p} OR i.notes ILIKE $${p})`)
     params.push(`%${search}%`)
     p++
   }
@@ -23,6 +23,41 @@ export async function GET(request: Request) {
   if (categoryId) {
     conditions.push(`EXISTS (SELECT 1 FROM item_categories ic2 WHERE ic2.item_id = i.id AND ic2.category_id = $${p})`)
     params.push(parseInt(categoryId))
+    p++
+  }
+
+  const minVolume = searchParams.get('minVolume')
+  const maxVolume = searchParams.get('maxVolume')
+  const minDim = searchParams.get('minDim')
+  const maxDim = searchParams.get('maxDim')
+  const dimFormula = parseInt(searchParams.get('dimFormula') ?? '166')
+
+  if (![166, 139, 5000].includes(dimFormula)) {
+    return Response.json({ error: 'Invalid dimFormula' }, { status: 400 })
+  }
+
+  if (minVolume) {
+    conditions.push(`(i.length * i.width * i.height) >= $${p}`)
+    params.push(parseFloat(minVolume))
+    p++
+  }
+  if (maxVolume) {
+    conditions.push(`(i.length * i.width * i.height) <= $${p}`)
+    params.push(parseFloat(maxVolume))
+    p++
+  }
+
+  const dimDivisor = dimFormula === 5000 ? `${dimFormula}` : `${dimFormula}`
+  const dimMultiplier = dimFormula === 5000 ? '16.387' : '1'
+
+  if (minDim) {
+    conditions.push(`(i.length * i.width * i.height * ${dimMultiplier}) / ${dimDivisor} >= $${p}`)
+    params.push(parseFloat(minDim))
+    p++
+  }
+  if (maxDim) {
+    conditions.push(`(i.length * i.width * i.height * ${dimMultiplier}) / ${dimDivisor} <= $${p}`)
+    params.push(parseFloat(maxDim))
     p++
   }
 
@@ -74,7 +109,7 @@ export async function POST(request: Request) {
     return Response.json({ error: parsed.error.flatten() }, { status: 400 })
   }
 
-  const { name, description, image_url, stock, barcode, categoryIds } = parsed.data
+  const { name, notes, price, length, width, height, weight, image_url, stock, barcode, sku, categoryIds } = parsed.data
 
   const slug = await generateUniqueSlug(name, async (s) => {
     const [existing] = await sql`SELECT 1 FROM items WHERE slug = ${s}`
@@ -82,8 +117,8 @@ export async function POST(request: Request) {
   })
 
   const [item] = await sql`
-    INSERT INTO items (slug, name, description, image_url, stock, barcode)
-    VALUES (${slug}, ${name}, ${description ?? null}, ${image_url || null}, ${stock ?? 0}, ${barcode ?? null})
+    INSERT INTO items (slug, name, notes, price, length, width, height, weight, image_url, stock, barcode, sku)
+    VALUES (${slug}, ${name}, ${notes ?? null}, ${price ?? null}, ${length ?? null}, ${width ?? null}, ${height ?? null}, ${weight ?? null}, ${image_url || null}, ${stock ?? 0}, ${barcode ?? null}, ${sku ?? null})
     RETURNING *
   `
 

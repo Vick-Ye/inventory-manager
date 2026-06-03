@@ -39,7 +39,7 @@ describe('items API', () => {
   it('creates an item with auto-slug', async () => {
     const { res, data } = await apiJson('/api/items', {
       method: 'POST',
-      body: { name: 'Test Widget Alpha', description: 'A test widget' },
+      body: { name: 'Test Widget Alpha', notes: 'A test widget' },
     })
     expect(res.status).toBe(201)
     expect(data.slug).toMatch(/^test-widget-alpha(-\d+)?$/)

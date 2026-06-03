@@ -8,7 +8,13 @@ interface Item {
   id: number
   slug: string
   name: string
-  description: string | null
+  notes: string | null
+  price: number | null
+  length: number | null
+  width: number | null
+  height: number | null
+  weight: number | null
+  sku: string | null
   stock: number
   image_url: string | null
   categories: { id: number; name: string }[]
@@ -23,14 +29,18 @@ export function ItemCard({
 }) {
   return (
     <div className="flex gap-4 rounded-lg border bg-white p-4 shadow-sm hover:shadow-md transition-shadow">
-      <Link href={`/items/${item.slug}`} className="shrink-0">
-        <ImageDisplay
-          src={item.image_url}
-          alt={item.name}
-          className="h-24 w-24 rounded-md object-cover"
-          fallbackClassName="h-24 w-24 rounded-md text-xs"
-        />
-      </Link>
+      <div className="flex flex-col shrink-0">
+        <Link href={`/items/${item.slug}`}>
+          <ImageDisplay
+            src={item.image_url}
+            alt={item.name}
+            className="h-24 w-24 rounded-md object-cover"
+            fallbackClassName="h-24 w-24 rounded-md text-xs"
+          />
+        </Link>
+        {item.sku && <p className="mt-1 text-[11px] text-gray-400">SKU: {item.sku}</p>}
+        {item.notes && <p className="mt-0.5 max-w-24 truncate text-[11px] text-gray-500">{item.notes}</p>}
+      </div>
       <div className="flex flex-1 flex-col justify-between min-w-0">
         <div>
           <Link
@@ -39,9 +49,16 @@ export function ItemCard({
           >
             {item.name}
           </Link>
-          {item.description && (
-            <p className="mt-1 truncate text-sm text-gray-500">{item.description}</p>
-          )}
+          <div className="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-sm text-gray-500">
+            {item.price !== null && <span className="whitespace-nowrap">${(item.price / 100).toFixed(2)}</span>}
+            {item.weight !== null && <span className="whitespace-nowrap">{item.weight} lbs</span>}
+            {item.length !== null && item.width !== null && item.height !== null && (
+              <span className="whitespace-nowrap">{item.length} × {item.width} × {item.height} in</span>
+            )}
+            {item.length !== null && (item.width === null || item.height === null) && (
+              <span className="whitespace-nowrap">Length: {item.length} in</span>
+            )}
+          </div>
           <div className="mt-2 flex flex-wrap gap-1">
             {item.categories.map((c) => (
               <span

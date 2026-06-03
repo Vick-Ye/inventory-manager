@@ -61,7 +61,7 @@ export async function PUT(
     return Response.json({ error: parsed.error.flatten() }, { status: 400 })
   }
 
-  const { name, description, image_url, barcode, categoryIds } = parsed.data
+  const { name, notes, price, length, width, height, weight, image_url, barcode, sku, categoryIds } = parsed.data
 
   let slug = item.slug
   if (name && name !== item.name) {
@@ -76,9 +76,15 @@ export async function PUT(
     UPDATE items
     SET slug = ${slug},
         name = COALESCE(${name ?? null}, name),
-        description = COALESCE(${description ?? null}, description),
+        notes = COALESCE(${notes ?? null}, notes),
+        price = COALESCE(${price ?? null}, price),
+        length = COALESCE(${length ?? null}, length),
+        width = COALESCE(${width ?? null}, width),
+        height = COALESCE(${height ?? null}, height),
+        weight = COALESCE(${weight ?? null}, weight),
         image_url = COALESCE(${image_url ?? null}, image_url),
         barcode = COALESCE(${barcode ?? null}, barcode),
+        sku = COALESCE(${sku ?? null}, sku),
         updated_at = now()
     WHERE id = ${item.id}
     RETURNING *

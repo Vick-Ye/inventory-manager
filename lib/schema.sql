@@ -10,10 +10,16 @@ CREATE TABLE IF NOT EXISTS items (
   id SERIAL PRIMARY KEY,
   slug TEXT NOT NULL UNIQUE,
   name TEXT NOT NULL,
-  description TEXT,
+  notes TEXT,
+  price INTEGER,
+  length NUMERIC(8,2),
+  width NUMERIC(8,2),
+  height NUMERIC(8,2),
+  weight NUMERIC(8,2),
   stock INTEGER NOT NULL DEFAULT 0 CHECK (stock >= 0),
   image_url TEXT,
   barcode TEXT UNIQUE,
+  sku TEXT UNIQUE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );

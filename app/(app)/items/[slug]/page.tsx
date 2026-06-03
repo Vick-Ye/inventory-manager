@@ -11,12 +11,19 @@ import { StockGraph } from '@/components/stock-history/stock-graph'
 import { Pagination } from '@/components/ui/pagination'
 import { ConfirmDialog } from '@/components/ui/confirm-dialog'
 import { StockAdjustForm } from '@/components/items/stock-adjust-form'
+import { ShippingInfo } from '@/components/items/shipping-info'
 
 interface Item {
   id: number
   slug: string
   name: string
-  description: string | null
+  notes: string | null
+  price: number | null
+  length: number | null
+  width: number | null
+  height: number | null
+  weight: number | null
+  sku: string | null
   stock: number
   image_url: string | null
   barcode: string | null
@@ -164,14 +171,20 @@ export default function ItemDetailPage() {
               </span>
             </div>
 
-            {item.barcode && (
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-500">Barcode:</span>
-                <code className="rounded bg-gray-100 px-2 py-0.5 text-sm font-mono">
-                  {item.barcode}
-                </code>
-              </div>
-            )}
+            <div className="flex flex-wrap gap-x-6 gap-y-1">
+              {item.barcode && (
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-gray-500">Barcode:</span>
+                  <code className="rounded bg-gray-100 px-2 py-0.5 text-sm font-mono">{item.barcode}</code>
+                </div>
+              )}
+              {item.sku && (
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-gray-500">SKU:</span>
+                  <code className="rounded bg-gray-100 px-2 py-0.5 text-sm font-mono">{item.sku}</code>
+                </div>
+              )}
+            </div>
 
             <StockAdjustForm slug={slug} currentStock={item.stock} onAdjusted={onStockAdjusted} />
 
@@ -182,11 +195,32 @@ export default function ItemDetailPage() {
           </div>
 
           {/* row 2, cols 1-2 */}
-          {item.description && (
+          <div className="col-span-2 flex flex-wrap items-center gap-x-6 gap-y-1 text-sm">
+            {item.price !== null && (
+              <span className="text-lg font-semibold text-gray-900">${(item.price / 100).toFixed(2)}</span>
+            )}
+            {item.length !== null && item.width !== null && item.height !== null && (
+              <span className="text-gray-500">Dimensions: {item.length} × {item.width} × {item.height} in</span>
+            )}
+            {item.length !== null && (item.width === null || item.height === null) && (
+              <span className="text-gray-500">Length: {item.length} in</span>
+            )}
+            {item.weight !== null && <span className="text-gray-500">Weight: {item.weight} lbs</span>}
+          </div>
+          {item.notes && (
             <p className="col-span-2 whitespace-pre-wrap break-words text-sm text-gray-500">
-              {item.description}
+              {item.notes}
             </p>
           )}
+
+          <div className="col-span-2">
+            <ShippingInfo
+              length={item.length}
+              width={item.width}
+              height={item.height}
+              weight={item.weight}
+            />
+          </div>
         </div>
       </div>
 
