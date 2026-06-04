@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Edit2, Trash2, BarChart3 } from 'lucide-react'
 import { ImageDisplay } from '@/components/ui/image-display'
@@ -44,6 +44,8 @@ interface HistoryEntry {
 export default function ItemDetailPage() {
   const { slug } = useParams<{ slug: string }>()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const adjustStock = searchParams.get('adjustStock')
   const [item, setItem] = useState<Item | null>(null)
   const [history, setHistory] = useState<HistoryEntry[]>([])
   const [totalPages, setTotalPages] = useState(0)
@@ -186,7 +188,7 @@ export default function ItemDetailPage() {
               )}
             </div>
 
-            <StockAdjustForm slug={slug} currentStock={item.stock} onAdjusted={onStockAdjusted} />
+            <StockAdjustForm slug={slug} currentStock={item.stock} onAdjusted={onStockAdjusted} defaultOpen={adjustStock === 'true'} />
 
             <div className="flex gap-6 text-xs text-gray-400">
               <span>Created: {new Date(item.created_at).toLocaleDateString()}</span>

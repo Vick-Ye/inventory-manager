@@ -41,5 +41,5 @@ export const updateItemSchema = z.object({
 
 export const stockAdjustSchema = z.object({
   change: z.number().int().refine(v => v !== 0, 'change must be non-zero'),
-  reason: z.string().min(1, 'Reason is required'),
+  reason: z.string().optional(),
 })

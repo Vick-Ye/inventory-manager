@@ -18,7 +18,7 @@ export default function ScanPage() {
     const res = await fetch(`/api/items/by-barcode/${encodeURIComponent(code)}`)
     if (res.ok) {
       const item = await res.json()
-      router.push(`/items/${item.slug}`)
+      router.push(`/items/${item.slug}?adjustStock=true`)
     } else {
       router.push(`/items/new?barcode=${encodeURIComponent(code)}`)
     }

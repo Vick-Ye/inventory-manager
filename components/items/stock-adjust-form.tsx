@@ -6,12 +6,14 @@ export function StockAdjustForm({
   slug,
   currentStock,
   onAdjusted,
+  defaultOpen = false,
 }: {
   slug: string
   currentStock: number
   onAdjusted: () => void
+  defaultOpen?: boolean
 }) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(defaultOpen)
   const [change, setChange] = useState('')
   const [reason, setReason] = useState('')
   const [error, setError] = useState('')
@@ -26,16 +28,12 @@ export function StockAdjustForm({
       setError('Change must be a non-zero number')
       return
     }
-    if (!reason.trim()) {
-      setError('Reason is required')
-      return
-    }
 
     setSubmitting(true)
     const res = await fetch(`/api/items/${slug}/stock`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ change: changeNum, reason }),
+      body: JSON.stringify({ change: changeNum, reason: reason || undefined }),
     })
 
     if (!res.ok) {
@@ -77,7 +75,7 @@ export function StockAdjustForm({
         />
       </div>
       <div>
-        <label className="block text-xs font-medium text-gray-500">Reason</label>
+        <label className="block text-xs font-medium text-gray-500">Reason (optional)</label>
         <input
           type="text"
           value={reason}
